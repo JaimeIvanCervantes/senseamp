@@ -18,15 +18,18 @@ public class HomeActivity extends Activity {
 		setContentView(R.layout.activity_home);
 	}
 
-	public void onClickWriteByMe(View v) {
-		// Start write by me activity
-        Intent i = new Intent(HomeActivity.this, SenseActivity.class);
-        startActivity(i);		
-		
+	public void onClickWriteByMe(View v) {		
 		// Call vibration pattern
 		long[] pattern = {0, 50, 150, 50, 150, 50, 150, 50};
 		Vibrator vib = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
 		vib.vibrate(pattern, -1);
+		
+		// Start write by me activity
+        Intent i = new Intent(HomeActivity.this, SenseActivity.class);
+        startActivity(i);
+        
+        // close this activity
+        finish();
 	}	
 	
 	public void onClickWriteByFriend(View v) {
@@ -48,6 +51,13 @@ public class HomeActivity extends Activity {
 		long[] pattern = {0, 50};
 		Vibrator vib = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
 		vib.vibrate(pattern, -1);
+		
+		// Start personalize activity
+        Intent i = new Intent(HomeActivity.this, SettingsActivity.class);
+        startActivity(i);	
+        
+        // close this activity
+        finish();
 	}	
 	
 	public void onClickBooks(View v) {

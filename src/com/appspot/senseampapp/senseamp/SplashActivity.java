@@ -17,6 +17,9 @@ public class SplashActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
  
+        // Set time for String2Vibration class
+        String2Vibrations.time = 200L;
+        
     	// Vibrate
     	Vibrator v = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
     	v.vibrate(SPLASH_TIME_OUT);

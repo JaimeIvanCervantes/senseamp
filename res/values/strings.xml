@@ -8,5 +8,6 @@
     <string name="title_activity_write_by_me">WriteByMeActivity</string>
     <string name="title_activity_write_by_friend">WriteByFriendActivity</string>
     <string name="title_activity_sense">SenseActivity</string>
+    <string name="title_activity_settings">SettingsActivity</string>
 
 </resources>

@@ -4,8 +4,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 public class String2Vibrations {
-
-    public Long time = 200L;
+	
+    //static public Long time = 200L;
+	static public Long time;
     public Long dit = time; //short vibration
     public Long dah = 3*time; //long vibration
     public Long pspa = 2*time; //letter space
@@ -105,6 +106,8 @@ public class String2Vibrations {
                 vibrations.addAll(Arrays.asList(pspa,dah,pspa,dah,pspa,dah,pspa,dah,pspa,dit));
             else if (character == '0')
                 vibrations.addAll(Arrays.asList(pspa,dah,pspa,dah,pspa,dah,pspa,dah,pspa,dah));
+            else
+            	vibrations.addAll(Arrays.asList(dit,dit));
         }
 
         long[] result = new long[vibrations.size()];
