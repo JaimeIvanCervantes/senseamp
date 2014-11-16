@@ -6,6 +6,7 @@
     android:padding="0dp"
     android:layout_margin="0dp"
     android:stretchColumns="1"
+    android:orientation="horizontal"
     android:background="@color/yellow">
     
     <LinearLayout android:id="@+id/linearLayout2" 

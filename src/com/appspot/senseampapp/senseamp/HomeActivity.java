@@ -19,6 +19,10 @@ public class HomeActivity extends Activity {
 	}
 
 	public void onClickWriteByMe(View v) {
+		// Start write by me activity
+        Intent i = new Intent(HomeActivity.this, SenseActivity.class);
+        startActivity(i);		
+		
 		// Call vibration pattern
 		long[] pattern = {0, 50, 150, 50, 150, 50, 150, 50};
 		Vibrator vib = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
@@ -31,7 +35,7 @@ public class HomeActivity extends Activity {
 		Vibrator vib = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
 		vib.vibrate(pattern, -1);
 		
-		// Start write by me activity
+		// Start write by friend activity
         Intent i = new Intent(HomeActivity.this, WriteByFriendActivity.class);
         startActivity(i);
 
