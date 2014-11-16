@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/layout"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:padding="0dp"
+    android:layout_margin="0dp"
+    android:stretchColumns="1"
+    android:background="@color/yellow">
+    
+    <LinearLayout android:id="@+id/linearLayout2" 
+        		  android:layout_height="fill_parent" 
+                  android:layout_width="fill_parent" 
+                  android:layout_weight="1"
+                  android:padding="0dp"
+                  android:layout_margin="0dp">
+                  
+        <Button android:layout_weight="2" 
+                android:text="Write by Me" 
+                android:id="@+id/button1" 
+                android:layout_width="fill_parent" 
+                android:layout_height="fill_parent"
+                android:padding="0dp"
+                android:layout_margin="0dp"
+                android:background="@color/green"
+                android:onClick="onClickWriteByMe"/>
+        
+        <Button android:layout_weight="2" 
+                android:text="Write by Friend" 
+                android:id="@+id/button2" 
+                android:layout_width="fill_parent" 
+                android:layout_height="fill_parent"
+                android:padding="0dp"
+                android:layout_margin="0dp"
+                android:background="@color/orange"
+                android:onClick="onClickWriteByFriend"/>
+        
+    </LinearLayout>
+    
+    <LinearLayout android:id="@+id/linearLayout1" 
+                  android:layout_width="fill_parent" 
+                  android:layout_height="fill_parent"
+                  android:layout_weight="1"
+                  android:padding="0dp"
+                  android:layout_margin="0dp">
+        
+        <Button android:layout_weight="2" 
+                android:text="Personalize" 
+                android:id="@+id/button3" 
+                android:layout_width="fill_parent" 
+                android:layout_height="fill_parent"
+                android:padding="0dp"
+                android:layout_margin="0dp"
+                android:background="@color/yellow"
+                android:onClick="onClickPersonalize"/>
+        
+        <Button android:layout_weight="2" 
+                android:text="Books" 
+                android:id="@+id/button4" 
+                android:layout_width="fill_parent" 
+                android:layout_height="fill_parent"
+                android:padding="0dp"
+                android:layout_margin="0dp"
+                android:background="@color/purple"
+                android:onClick="onClickBooks"/>
+        
+    </LinearLayout>
+</TableLayout>

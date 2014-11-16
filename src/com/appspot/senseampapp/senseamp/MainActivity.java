@@ -5,12 +5,23 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import android.content.Context;
+import android.os.Vibrator;
+
 public class MainActivity extends Activity {
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
+		String2Vibrations str2vib = new String2Vibrations();
+		
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
+		
+		// Get instance of Vibrator from current Context
+		Vibrator v = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
+		long[] pattern = str2vib.getVibrations("aeeeea");
+		v.vibrate(pattern, -1);
+		
 	}
 
 	@Override
