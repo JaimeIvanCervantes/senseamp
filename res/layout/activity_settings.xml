@@ -26,16 +26,16 @@
                   android:layout_height="fill_parent"
                   android:layout_weight="1">
                 		
-        <Button android:layout_weight="2" 
-                android:text="Home" 
+        <ImageButton android:layout_weight="2" 
+                android:src="@drawable/home" 
                 android:id="@+id/home" 
                 android:layout_width="fill_parent" 
                 android:layout_height="fill_parent"
                 android:background="@color/magenta"
                 android:onClick="onClickHome"/>
         
-        <Button android:layout_weight="2" 
-                android:text="Set Duration" 
+        <ImageButton android:layout_weight="2" 
+                android:src="@drawable/apply"
                 android:id="@+id/duration" 
                 android:layout_width="fill_parent" 
                 android:layout_height="fill_parent"

@@ -25,7 +25,7 @@ import android.util.Log;
 
 public class SettingsActivity extends Activity {
 	private Drawable circle;
-	private long duration = 200L;
+	private long duration = 100L;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {

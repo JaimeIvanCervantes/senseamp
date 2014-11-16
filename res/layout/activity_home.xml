@@ -15,19 +15,9 @@
                   android:layout_weight="1"
                   android:padding="0dp"
                   android:layout_margin="0dp">
-                  
-        <Button android:layout_weight="2" 
-                android:text="Write by Me" 
-                android:id="@+id/writeByMe" 
-                android:layout_width="fill_parent" 
-                android:layout_height="fill_parent"
-                android:padding="0dp"
-                android:layout_margin="0dp"
-                android:background="@color/green"
-                android:onClick="onClickWriteByMe"/>
-        
-        <Button android:layout_weight="2" 
-                android:text="Write by Friend" 
+                          
+        <ImageButton android:layout_weight="2" 
+                android:src="@drawable/write" 
                 android:id="@+id/writeByFriend" 
                 android:layout_width="fill_parent" 
                 android:layout_height="fill_parent"
@@ -35,6 +25,16 @@
                 android:layout_margin="0dp"
                 android:background="@color/orange"
                 android:onClick="onClickWriteByFriend"/>
+        
+        <ImageButton android:layout_weight="2" 
+                android:src="@drawable/sense"
+                android:id="@+id/writeByMe" 
+                android:layout_width="fill_parent" 
+                android:layout_height="fill_parent"
+                android:padding="0dp"
+                android:layout_margin="0dp"
+                android:background="@color/green"
+                android:onClick="onClickWriteByMe"/>
         
     </LinearLayout>
     
@@ -45,8 +45,8 @@
                   android:padding="0dp"
                   android:layout_margin="0dp">
         
-        <Button android:layout_weight="2" 
-                android:text="Personalize" 
+        <ImageButton android:layout_weight="2" 
+                android:src="@drawable/settings" 
                 android:id="@+id/personalize" 
                 android:layout_width="fill_parent" 
                 android:layout_height="fill_parent"
@@ -55,8 +55,8 @@
                 android:background="@color/yellow"
                 android:onClick="onClickPersonalize"/>
         
-        <Button android:layout_weight="2" 
-                android:text="Books" 
+        <ImageButton android:layout_weight="2" 
+                android:src="@drawable/books"
                 android:id="@+id/books" 
                 android:layout_width="fill_parent" 
                 android:layout_height="fill_parent"
