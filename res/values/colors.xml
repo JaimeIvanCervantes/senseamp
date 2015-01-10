@@ -8,4 +8,14 @@
 	<color name="purple">#ff990099</color>
 	<color name="lightblue">#ff00ffff</color>
 	<color name="lemon">#ff99ff33</color>
+	<color name="white">#ffffffff</color>
+	
+	<color name="bcolor1">#ff928598</color>
+	<color name="bcolor2">#ff8DA3E2</color>
+	
+	<color name="color1">#ff4477C1</color>	
+	<color name="color2">#ffED9D58</color>
+	<color name="color3">#ffE76B69</color>
+	<color name="color4">#ffDEDE7D</color>
+	
 </resources>

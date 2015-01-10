@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
 import android.content.Context;
 import android.os.Vibrator;
 import android.content.Intent;
@@ -14,13 +15,16 @@ public class HomeActivity extends Activity {
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
+		// Remove action bar
+		this.requestWindowFeature(Window.FEATURE_NO_TITLE);
+		
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_home);
 	}
 
 	public void onClickWriteByMe(View v) {		
 		// Call vibration pattern
-		long[] pattern = {0, 50, 150, 50, 150, 50, 150, 50};
+		long[] pattern = {0, 50, 150, 50, 150, 50}; 
 		Vibrator vib = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
 		vib.vibrate(pattern, -1);
 		
@@ -34,7 +38,7 @@ public class HomeActivity extends Activity {
 	
 	public void onClickWriteByFriend(View v) {
 		// Call vibration pattern
-		long[] pattern = {0, 50, 150, 50, 150, 50};
+		long[] pattern = {0, 50, 150, 50, 150, 50, 150, 50};
 		Vibrator vib = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
 		vib.vibrate(pattern, -1);
 		
@@ -65,6 +69,13 @@ public class HomeActivity extends Activity {
 		long[] pattern = {0, 50, 150, 50};
 		Vibrator vib = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
 		vib.vibrate(pattern, -1);
+		
+		// Start write by friend activity
+        Intent i = new Intent(HomeActivity.this, BooksActivity.class);
+        startActivity(i);
+
+        // close this activity
+        finish();
 	}	
 	
 	

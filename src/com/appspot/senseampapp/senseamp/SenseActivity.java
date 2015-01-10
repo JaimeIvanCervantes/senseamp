@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.Window;
 import android.graphics.Rect;
 import android.graphics.RectF;
 import android.view.MotionEvent;
@@ -27,6 +28,10 @@ public class SenseActivity extends Activity {
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
+		// Remove action bar
+		this.requestWindowFeature(Window.FEATURE_NO_TITLE);
+		
+		// Initialize
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_sense);
 		
@@ -99,6 +104,7 @@ public class SenseActivity extends Activity {
 					break;
 				case MotionEvent.ACTION_UP:
 					visible = 0;
+					invalidate();	
 					break;
 				case MotionEvent.ACTION_DOWN:
 					visible = 1;

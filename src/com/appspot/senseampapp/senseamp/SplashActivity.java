@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Vibrator;
+import android.view.Window;
  
 public class SplashActivity extends Activity {
  
@@ -14,11 +15,12 @@ public class SplashActivity extends Activity {
  
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+		// Remove action bar
+		this.requestWindowFeature(Window.FEATURE_NO_TITLE);		    	
+    	
+		// Activity initialization
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
- 
-        // Set time for String2Vibration class
-        String2Vibrations.time = 100L;
         
     	// Vibrate
     	Vibrator v = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);

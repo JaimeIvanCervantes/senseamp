@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+android:orientation="vertical"
+android:layout_width="fill_parent"
+android:layout_height="fill_parent"
+android:weightSum="4">
+
+    
+	<ListView
+	    android:id="@+id/list"
+		android:layout_width="fill_parent"
+		android:layout_height="0dp"
+		android:layout_weight="3"
+		android:background="#FFFFFF"/>
+	
+	<LinearLayout
+	        android:layout_width="fill_parent"
+    		android:layout_height="0dp"
+    		android:orientation="horizontal"
+    		android:layout_weight="1"
+    		android:weightSum="2">
+    			
+        <ImageButton
+                android:layout_width="0dp"
+    			android:layout_height="fill_parent"
+                android:src="@drawable/home"
+                android:id="@+id/home" 
+                android:background="@color/magenta"
+                android:onClick="onClickHome"
+                android:layout_weight="1"/>
+        
+        <ImageButton 
+                android:layout_width="0dp"
+    			android:layout_height="fill_parent"
+                android:src="@drawable/play"
+                android:id="@+id/playPause" 
+                android:background="@color/purple"
+                android:onClick="onClickPlayPause"
+                android:layout_weight="1"/>
+        
+	</LinearLayout>
+
+</LinearLayout>
+

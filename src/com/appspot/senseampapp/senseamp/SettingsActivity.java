@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.Window;
 import android.graphics.Rect;
 import android.graphics.RectF;
 import android.view.MotionEvent;
@@ -25,10 +26,14 @@ import android.util.Log;
 
 public class SettingsActivity extends Activity {
 	private Drawable circle;
-	private long duration = 100L;
+	private long duration = String2Vibrations.getTime();
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
+		// Remove action bar
+		this.requestWindowFeature(Window.FEATURE_NO_TITLE);		
+		
+		// Activity initialization
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_settings);
 		
@@ -60,10 +65,13 @@ public class SettingsActivity extends Activity {
 	
 	public void onClickDuration(View v) {
 		// Set String2Vibrations class
-		String2Vibrations.time = duration;
+		String2Vibrations.setTime(duration);
+		
+		Log.e("DUR: ", Long.toString(duration));
+		Log.e("TIM: ", Long.toString(String2Vibrations.getTime()));
 		
 		// Call vibration pattern
-		long[] pattern = {0, String2Vibrations.time, String2Vibrations.time, String2Vibrations.time};
+		long[] pattern = {0, String2Vibrations.getTime(), String2Vibrations.getTime()*2, String2Vibrations.getTime()};
 		Vibrator vib = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
 		vib.vibrate(pattern, -1);
 
@@ -76,7 +84,7 @@ public class SettingsActivity extends Activity {
 		private Paint paint;
 		private float selectionOffsetX = 0;
 		private float selectionOffsetY = 0;
-		private float currentX = 0;
+		private float currentX = 0.0f;
 		private float currentY = 0;
 		private RectF bounds = new RectF();
 		private Rect rect = new Rect();
@@ -91,9 +99,11 @@ public class SettingsActivity extends Activity {
 		public DrawingView(Context context) {
 			super(context);
 		}
-		private void init() {			
+		private void init() {
+			currentX=(((float)String2Vibrations.getTime()/600.0f)*this.getWidth());
 			paint = new Paint();
 			paint.setColor(Color.RED);
+			invalidate();
 		}
 		
 		@Override public boolean onTouchEvent(MotionEvent event) {
@@ -146,23 +156,4 @@ public class SettingsActivity extends Activity {
 		
 		}
 	}	
-
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.sense, menu);
-		return true;
-	}
-
-	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
-		// Handle action bar item clicks here. The action bar will
-		// automatically handle clicks on the Home/Up button, so long
-		// as you specify a parent activity in AndroidManifest.xml.
-		int id = item.getItemId();
-		if (id == R.id.action_settings) {
-			return true;
-		}
-		return super.onOptionsItemSelected(item);
-	}
 }
