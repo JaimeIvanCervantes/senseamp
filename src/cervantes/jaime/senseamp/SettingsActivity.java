@@ -1,4 +1,4 @@
-package com.appspot.senseampapp.senseamp;
+package cervantes.jaime.senseamp;
 
 import android.app.Activity;
 import android.os.Bundle;
@@ -21,19 +21,21 @@ import android.widget.LinearLayout;
 import android.widget.LinearLayout.LayoutParams;
 import android.util.AttributeSet;
 import android.os.Vibrator;
+import android.util.Log;
 
 
-public class SenseActivity extends Activity {
+public class SettingsActivity extends Activity {
 	private Drawable circle;
+	private long duration = String2Vibrations.getTime();
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		// Remove action bar
-		this.requestWindowFeature(Window.FEATURE_NO_TITLE);
+		this.requestWindowFeature(Window.FEATURE_NO_TITLE);		
 		
-		// Initialize
+		// Activity initialization
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_sense);
+		setContentView(R.layout.activity_settings);
 		
 		// Get circle
 		circle = getResources().getDrawable(R.drawable.circle);
@@ -54,21 +56,57 @@ public class SenseActivity extends Activity {
 		vib.vibrate(pattern, -1);
 		
 		// Start write by me activity
-        Intent i = new Intent(SenseActivity.this, HomeActivity.class);
+        Intent i = new Intent(SettingsActivity.this, HomeActivity.class);
         startActivity(i);
 
         // close this activity
         finish();
 	}
+	
+	public void onClickDuration(View v) {
+		// Set String2Vibrations class
+		String2Vibrations.setTime(duration);
 		
+		Log.e("DUR: ", Long.toString(duration));
+		Log.e("TIM: ", Long.toString(String2Vibrations.getTime()));
+		
+		// Call vibration pattern
+		long[] pattern = {0, String2Vibrations.getTime(), String2Vibrations.getTime()*2, String2Vibrations.getTime()};
+		Vibrator vib = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
+		vib.vibrate(pattern, -1);
+
+        // close this activity
+        //finish();
+	}
+	
+	@Override
+	public void onPause() {
+		super.onPause();
+        this.finish();
+       
+    }
+	
+	@Override
+    public void onStop() {
+		super.onStop();
+		this.finish();
+       
+    }
+    
+	@Override
+    public void onDestroy() {
+		super.onDestroy();      
+    }		
 	
 	private class DrawingView extends View {
 		private Paint paint;
 		private float selectionOffsetX = 0;
 		private float selectionOffsetY = 0;
+		private float currentX = 0.0f;
+		private float currentY = 0;
 		private RectF bounds = new RectF();
 		private Rect rect = new Rect();
-		private int visible = 0;
+		private int moving = 0;
 		
 		public DrawingView(Context context, AttributeSet attrs, int defStyle) {
 			super(context, attrs, defStyle);
@@ -79,9 +117,11 @@ public class SenseActivity extends Activity {
 		public DrawingView(Context context) {
 			super(context);
 		}
-		private void init() {			
+		private void init() {
+			currentX=(((float)String2Vibrations.getTime()/600.0f)*this.getWidth());
 			paint = new Paint();
 			paint.setColor(Color.RED);
+			invalidate();
 		}
 		
 		@Override public boolean onTouchEvent(MotionEvent event) {
@@ -90,31 +130,19 @@ public class SenseActivity extends Activity {
 			
 			switch(event.getAction()) {
 				case MotionEvent.ACTION_MOVE:
-						bounds.set(
-								event.getX() - 200/2,
-								event.getY() - 200/2, 
-								event.getX() - 200/2 + width, 
-								event.getY() - 200/2 + height);
-						invalidate();
+						currentX = event.getX();
+						currentY = event.getY();
+					
+						moving = 1;
 						
-				    	// Vibrate
-				    	Vibrator v = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
-				    	v.vibrate(100);
+						invalidate();
 					
 					break;
 				case MotionEvent.ACTION_UP:
-					visible = 0;
-					invalidate();	
+					moving = 0;
 					break;
 				case MotionEvent.ACTION_DOWN:
-					visible = 1;
-					
-					bounds.set(
-							event.getX() - 200/2,
-							event.getY() - 200/2, 
-							event.getX() - 200/2 + width, 
-							event.getY() - 200/2 + height);
-					invalidate();					
+					moving = 0;				
 					break;
 				default:
 					break;
@@ -125,34 +153,25 @@ public class SenseActivity extends Activity {
 		}
 		
 		@Override protected void onDraw(Canvas canvas) {
+			//long[] pattern = {50, (long)duration};
+			
 			if (paint == null) 
 				init();
 			
-			if (visible == 1) {
-				bounds.round(rect);
-				circle.setBounds(rect);
-				circle.draw(canvas);
+				// Update slider
+				canvas.drawRect(0, 0, currentX, this.getHeight(), paint);
+				
+			if (moving == 1 && currentX > 0) {
+				// Set duration
+				
+				duration = (long)((currentX/this.getWidth())*600);
+				Log.i("DURATION", Long.toString(duration));
+				
+				// Vibrate
+		    	Vibrator v = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
+		    	v.vibrate(100);
 			}
 		
 		}
 	}	
-
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.sense, menu);
-		return true;
-	}
-
-	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
-		// Handle action bar item clicks here. The action bar will
-		// automatically handle clicks on the Home/Up button, so long
-		// as you specify a parent activity in AndroidManifest.xml.
-		int id = item.getItemId();
-		if (id == R.id.action_settings) {
-			return true;
-		}
-		return super.onOptionsItemSelected(item);
-	}
 }

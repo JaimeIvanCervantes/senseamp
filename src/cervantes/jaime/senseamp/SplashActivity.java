@@ -1,4 +1,4 @@
-package com.appspot.senseampapp.senseamp;
+package cervantes.jaime.senseamp;
 
 import android.app.Activity;
 import android.content.Context;

@@ -1,4 +1,4 @@
-package com.appspot.senseampapp.senseamp;
+package cervantes.jaime.senseamp;
 
 import java.util.ArrayList;
 import java.util.Arrays;

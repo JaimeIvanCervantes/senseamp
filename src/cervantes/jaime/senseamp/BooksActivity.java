@@ -1,4 +1,4 @@
-package com.appspot.senseampapp.senseamp;
+package cervantes.jaime.senseamp;
 
 import java.io.BufferedReader;
 import java.io.DataInputStream;
@@ -8,6 +8,7 @@ import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import android.app.Activity;
 import android.content.Context;
@@ -37,14 +38,14 @@ public class BooksActivity extends Activity {
 	private ArrayAdapter<String> adapter;
 	private ArrayList<String> fileNames;
 	File files[];
-	int mode = 0; // 0 for Continue, 1 for Ready, 2 for Playing, and 3 for Paused
+	private int mode = 0; // 0 for Continue, 1 for Ready, 2 for Playing, and 3 for Paused
 	
 	BufferedReader br = null;
 	File path = null;
 	
 	int lineNumber = 0;
 	String stringToPlay;
-	String fullFileName;
+	String fullFileName = "";
 	
 	Thread playThread;
 	
@@ -56,6 +57,9 @@ public class BooksActivity extends Activity {
 		// Set content
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_books);
+		
+		// Set mode
+		mode = 0;
 				
 		// Get instance of Vibrator from current Context
 		vib = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);		
@@ -141,8 +145,13 @@ public class BooksActivity extends Activity {
 		ImageButton playPauseButton = (ImageButton)findViewById(R.id.playPause);
 		long[] pausePattern = {0,50,150,50};
 
+		// File list is empty
+		if (fileNames.size() == 0) {
+			vib.cancel();
+			vib.vibrate(pausePattern, -1);			
+			
 		// If mode Continue, Ready, or Paused
-		if (mode == 0 || mode == 1 || mode == 3) { 
+		} else if (mode == 0 || mode == 1 || mode == 3) { 
 			// Change image resource to play
 			playPauseButton.setImageResource(R.drawable.pause);
 			
@@ -153,14 +162,19 @@ public class BooksActivity extends Activity {
 			playThread = new Thread() {//new Runnable() {
 		    	public void run() {
 		    		try {
-		    			// Skip lines in order to resume on last line
-		    			SharedPreferences preferences = getPreferences(MODE_PRIVATE);
-		    			
 		    			// Get previous settings
-		    			if (mode == 0) { 
-		    				fullFileName = preferences.getString("prevFullFileName", fullFileName);
-		    				lineNumber = preferences.getInt("prevLineNumber", lineNumber);	
+		    			Log.e("senseamp", "Mode: " + mode);
+		    			
+		    			// Retrieve shared preferences
+		    			if (mode == 0) {
+			    			SharedPreferences preferences = getSharedPreferences("senseamp", MODE_PRIVATE);
+		    				fullFileName = preferences.getString("prevFullFileName", "");
+		    				lineNumber = preferences.getInt("prevLineNumber", 0);	
+		    				Log.e("senseamp", "Retrieving: " + fullFileName);
 		    			}
+		    			
+		    			// Change mode to Playing
+		    			mode = 2;
 		    			
 		    			// Open file and get stream ready
 		    			File file = new File(fullFileName);
@@ -177,18 +191,32 @@ public class BooksActivity extends Activity {
 		    			while ((stringToPlay = br.readLine()) != null && mode != 3) {
 		    				lineNumber++;
 		    				pattern = String2Vibrations.getVibrations(stringToPlay);
-		    				vib.vibrate(pattern, -1);
+		    				//vib.vibrate(pattern, -1);
 						
 		    				long totalTime = 0L; // In milliseconds
 						
-		    				for (int i = 0; i < pattern.length; i++) {
-		    					totalTime += pattern[i];
+		    				// Loop through each vibration 
+		    				for (int i = 0; i < pattern.length; i = i + 2) {
+		    					if (mode == 3) break;
+		    					
+		    					long[] subPattern = {0, 0};
+		    					totalTime = pattern[i] + pattern[i+1];
+		    					
+		    					//subPattern = Arrays.copyOfRange(pattern, i, 2);
+		    					subPattern[0] = pattern[i];
+		    					subPattern[1] = pattern[i+1];
+			    				vib.vibrate(subPattern, -1);
+			    				
+			    				SystemClock.sleep(totalTime);
+			    				
 		    				}
+		    				
+		    				SystemClock.sleep(String2Vibrations.getTime()*6);
+
+		    				//totalTime += String2Vibrations.getTime()*6;
+		    				//SystemClock.sleep(totalTime);
 						
-		    				totalTime += String2Vibrations.getTime()*6;
-		    				SystemClock.sleep(totalTime);
-						
-		    				Log.d("BOOKS ACTIVITY", "Playing Line: " + stringToPlay);
+		    				//Log.d("BOOKS ACTIVITY", "Playing Line: " + stringToPlay);
 		    			}
 		    			
 		    			// Reset 
@@ -208,9 +236,6 @@ public class BooksActivity extends Activity {
 			// Start thread
 			if (!playThread.isAlive())
 			playThread.start();
-			
-			// Change mode to Playing
-			mode = 2;
 		
 		// If mode playing
 		} else if (mode == 2) {
@@ -225,8 +250,9 @@ public class BooksActivity extends Activity {
 			playPauseButton.setImageResource(R.drawable.play);
 			
 			// Save state 
-			SharedPreferences preferences = getPreferences(MODE_PRIVATE);
+			SharedPreferences preferences = getSharedPreferences("senseamp",MODE_PRIVATE);
 			SharedPreferences.Editor editor = preferences.edit();
+			editor.clear();
 			editor.putString("prevFullFileName", fullFileName);
 			editor.putInt("prevLineNumber", lineNumber);
 			editor.commit();			
@@ -253,11 +279,15 @@ public class BooksActivity extends Activity {
        mode = 3;
        
        // Save state
-		SharedPreferences preferences = getPreferences(MODE_PRIVATE);
+		SharedPreferences preferences = getSharedPreferences("senseamp",MODE_PRIVATE);
 		SharedPreferences.Editor editor = preferences.edit();
+		editor.clear();
 		editor.putString("prevFullFileName", fullFileName);
 		editor.putInt("prevLineNumber", lineNumber);
-		editor.commit();	
+		editor.commit();
+		
+		// End activity
+		this.finish();
     }
 	
 	@Override
@@ -269,14 +299,19 @@ public class BooksActivity extends Activity {
        mode = 3;
        
        // Save state
-		SharedPreferences preferences = getPreferences(MODE_PRIVATE);
+		SharedPreferences preferences = getSharedPreferences("senseamp",MODE_PRIVATE);
 		SharedPreferences.Editor editor = preferences.edit();
+		editor.clear();
 		editor.putString("prevFullFileName", fullFileName);
 		editor.putInt("prevLineNumber", lineNumber);
-		editor.commit();	       
+		editor.commit();
+		
+		// End activity
+		this.finish();
 
     }
     
+	@Override
     public void onDestroy() {
        super.onDestroy();
        
@@ -285,8 +320,9 @@ public class BooksActivity extends Activity {
        mode = 3;
        
        // Save state
-		SharedPreferences preferences = getPreferences(MODE_PRIVATE);
+		SharedPreferences preferences = getSharedPreferences("senseamp",MODE_PRIVATE);
 		SharedPreferences.Editor editor = preferences.edit();
+		editor.clear();
 		editor.putString("prevFullFileName", fullFileName);
 		editor.putInt("prevLineNumber", lineNumber);
 		editor.commit();	       

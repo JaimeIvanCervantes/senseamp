@@ -1,4 +1,4 @@
-package com.appspot.senseampapp.senseamp;
+package cervantes.jaime.senseamp;
 
 import android.app.Activity;
 import android.content.Context;
@@ -32,12 +32,14 @@ public class WriteByFriendActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_write_by_friend);
 		
+		// Initialize vibrator
+		vib = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
+		
 	}
 
 	public void onClickHome(View v) {
 		// Call vibration pattern
 		long[] pattern = {0, 50};
-		vib = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
 		vib.vibrate(pattern, -1);
 		
 		// Start write by me activity
@@ -66,8 +68,7 @@ public class WriteByFriendActivity extends Activity {
 			inputText = (EditText) findViewById(R.id.textToPlay);
 			stringToPlay = inputText.getText().toString();
 		
-			// Get instance of Vibrator from current Context
-			vib = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
+			// Play pattern
 			pattern = String2Vibrations.getVibrations(stringToPlay);
 			vib.vibrate(pattern, -1);
 				
@@ -81,27 +82,33 @@ public class WriteByFriendActivity extends Activity {
 			
 			// Change image resource to play
 			playPauseButton.setImageResource(R.drawable.play);			
-			
-			
+	
 		}
 	}
 	
 
 	@Override
 	public void onPause() {
-       super.onPause();
-       vib.cancel();
-       	
+		super.onPause();
+        vib.cancel(); 
+        this.finish();
+       
     }
 	
 	@Override
     public void onStop() {
-       super.onStop();
-       vib.cancel();	       
+		super.onStop();
+		vib.cancel();
+		this.finish();
+       
     }
     
+	@Override
     public void onDestroy() {
-       super.onDestroy();
-       vib.cancel();	       
-    }	
+		super.onDestroy();
+		vib.cancel();
+       
+    }
+	
+    	
 }
