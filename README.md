@@ -7,7 +7,7 @@ SENSEAMP
 License
 -------
 
-[GNU General Public License, version 3](gnu.org/licenses/gpl.html)
+[GNU General Public License, version 3](http://www.gnu.org/licenses/gpl.html)
 
 Objective
 ---------
